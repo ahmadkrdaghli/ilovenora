@@ -1,0 +1,511 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>إلى نورا</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow reading column over a field of slowly rising hearts. A closed intro opens into a ruled love letter, a live counter panel, four tap-to-flip cards and a question whose "no" button runs away. */
+:root {
+  --bg: #fbeef0;
+  --surface: #fff8f6;
+  --ink: #3b1727;
+  --muted: #80586a;
+  --accent: #c2315b;
+  --on-accent: #ffffff;
+  --gold: #b9791f;
+  --line: #ecc9d3;
+  --font-display: "Aref Ruqaa", "Amiri", serif;
+  --font-letter: "Amiri", "Noto Naskh Arabic", serif;
+  --font-ui: "Cairo", "Segoe UI", Tahoma, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d0f19;
+    --surface: #2a1624;
+    --ink: #fbe9ee;
+    --muted: #cfa6b5;
+    --accent: #ff7a9c;
+    --on-accent: #2a0f1b;
+    --gold: #f0c27a;
+    --line: #4a2a3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1d0f19;
+  --surface: #2a1624;
+  --ink: #fbe9ee;
+  --muted: #cfa6b5;
+  --accent: #ff7a9c;
+  --on-accent: #2a0f1b;
+  --gold: #f0c27a;
+  --line: #4a2a3d;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(48rem 26rem at 95% -4%, color-mix(in srgb, var(--accent) 20%, transparent), transparent),
+    radial-gradient(40rem 24rem at -10% 55%, color-mix(in srgb, var(--gold) 14%, transparent), transparent);
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.8;
+  padding-inline: 1rem;
+  padding-block: 1.5rem 2rem;
+}
+main { position: relative; z-index: 1; max-width: 34rem; margin-inline: auto; }
+h1, h2 { text-wrap: balance; margin: 0; font-weight: 700; }
+p { margin: 0; }
+svg.heart { display: block; fill: currentColor; }
+
+#ambient { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; display: block; }
+#hearts { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; display: block; }
+
+/* intro */
+.intro { display: flex; flex-direction: column; align-items: flex-start; gap: 0.3rem; padding-block: 2rem 1.5rem; }
+.kicker { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; letter-spacing: 0.14em; color: var(--muted); }
+.kicker svg { width: 1.25rem; height: 1.25rem; color: var(--accent); animation: beat 1.6s ease-in-out infinite; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.22); } 28% { transform: scale(1); } 42% { transform: scale(1.14); } 56% { transform: scale(1); } }
+.name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 34vw, 10rem);
+  line-height: 1.1;
+  color: var(--accent);
+  text-shadow: 0 0 3rem color-mix(in srgb, var(--accent) 38%, transparent);
+}
+.intro h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 400; line-height: 1.6; }
+.btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 0.5rem 1.4rem color-mix(in srgb, var(--accent) 32%, transparent);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:focus-visible, .card:focus-visible, #no:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); box-shadow: none; }
+#open { margin-top: 1.2rem; animation: glow 2.2s ease-in-out infinite; }
+#yes { animation: glow 2.2s ease-in-out infinite; font-size: 1.15rem; padding-inline: 2.4rem; }
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0.5rem 1.4rem color-mix(in srgb, var(--accent) 30%, transparent); }
+  50% { box-shadow: 0 0.5rem 2.4rem 0.3rem color-mix(in srgb, var(--accent) 52%, transparent); }
+}
+
+/* story */
+#story { display: flex; flex-direction: column; gap: 3.6rem; padding-block: 1.5rem; }
+#story:not([hidden]) { animation: rise 0.7s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+h2 { display: flex; align-items: center; gap: 0.9rem; font-family: var(--font-display); font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
+h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+/* the letter */
+.paper {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2rem 1.5rem 1.4rem;
+  box-shadow: 0 1.2rem 2.6rem color-mix(in srgb, var(--accent) 12%, transparent);
+  min-height: 15rem;
+}
+.seal {
+  position: absolute;
+  top: -1.2rem;
+  inset-inline-end: 1.4rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0.35rem 0.9rem color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.seal svg { width: 1.3rem; height: 1.3rem; }
+.to { font-family: var(--font-display); font-size: 2.3rem; line-height: 1.3; color: var(--accent); margin-bottom: 0.3rem; }
+#typed {
+  font-family: var(--font-letter);
+  font-size: 1.3rem;
+  line-height: 2.1;
+  white-space: pre-wrap;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(2.1em - 1px), var(--line) calc(2.1em - 1px), var(--line) 2.1em);
+}
+#typed.typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-inline-start: 3px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: blink 0.9s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* counter */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.2rem 1.2rem 0.4rem;
+  box-shadow: 0 1rem 2.2rem color-mix(in srgb, var(--accent) 9%, transparent);
+}
+.since { color: var(--muted); }
+.days { display: flex; align-items: center; gap: 0.8rem; margin-block: 0.1rem 0.8rem; }
+.days b {
+  font-size: clamp(4.5rem, 26vw, 6.8rem);
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.days span { font-family: var(--font-display); font-size: 2rem; }
+.days svg { width: 2rem; height: 2rem; margin-inline-start: auto; color: var(--accent); animation: beat 1.6s ease-in-out infinite; }
+.clock { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px dashed var(--line); }
+.clock div { padding-block: 0.8rem; text-align: center; }
+.clock div + div { border-inline-start: 1px dashed var(--line); }
+.clock b { display: block; font-size: 1.8rem; line-height: 1.3; color: var(--gold); font-variant-numeric: tabular-nums; }
+.clock small { color: var(--muted); font-size: 0.85rem; }
+
+/* reasons */
+.hint-line { color: var(--muted); margin-bottom: 1rem; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+.card {
+  appearance: none;
+  cursor: pointer;
+  min-height: 8.6rem;
+  padding: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+.card:hover { transform: translateY(-3px); }
+.card .front { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--accent); }
+.card .back { display: none; }
+.card[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.card[aria-pressed="true"] .front { display: none; }
+.card[aria-pressed="true"] .back { display: block; animation: unfold 0.4s ease both; }
+@keyframes unfold { from { opacity: 0; transform: rotateX(80deg) scale(0.9); } }
+
+/* the question */
+.ask h2 { font-size: 2.5rem; }
+#hint { min-height: 1.8em; margin-bottom: 0.7rem; color: var(--muted); }
+#arena { position: relative; min-height: 13rem; }
+.row { display: flex; align-items: center; gap: 1rem; }
+.slot { position: relative; display: block; width: 6.2rem; height: 3.2rem; }
+#no {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6.2rem;
+  height: 3.2rem;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: transform 0.22s ease;
+}
+#answer { padding-block: 0.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; }
+#answer p { font-family: var(--font-display); font-size: 2rem; line-height: 1.7; color: var(--accent); }
+
+footer {
+  margin-top: 2.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  direction: ltr;
+  text-align: center;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<canvas id="ambient"></canvas>
+
+<main dir="rtl" lang="ar">
+  <section class="intro">
+    <p class="kicker">إلى
+      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </p>
+    <div class="name">نورا</div>
+    <h1>في شي بدي قولك ياه...</h1>
+    <button class="btn" id="open" type="button" aria-expanded="false" aria-controls="story">اضغطي هون</button>
+  </section>
+
+  <div id="story" hidden>
+    <section>
+      <h2>رسالة إلك</h2>
+      <div class="paper">
+        <span class="seal" aria-hidden="true"><svg class="heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>
+        <div class="to">نورا</div>
+        <p id="typed"></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>من يوم عرفتك</h2>
+      <div class="panel">
+        <p class="since">من 15 حزيران وحتى هلق، صار عمري معك:</p>
+        <div class="days">
+          <b id="d">0</b><span>يوم</span>
+          <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </div>
+        <div class="clock">
+          <div><b id="h">0</b><small>ساعة</small></div>
+          <div><b id="m">0</b><small>دقيقة</small></div>
+          <div><b id="s">0</b><small>ثانية</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>أشياء فيكِ بحبها</h2>
+      <p class="hint-line">اضغطي على كل وحدة.</p>
+      <div class="cards">
+        <button class="card" type="button" aria-pressed="false"><span class="front">ضحكتك</span><span class="back">بتغيّر مزاجي بثانية وحدة.</span></button>
+        <button class="card" type="button" aria-pressed="false"><span class="front">صوتك</span><span class="back">بسمعه وبنسى كل التعب.</span></button>
+        <button class="card" type="button" aria-pressed="false"><span class="front">طيبتك</span><span class="back">بتخلّيني أحسن من حالي.</span></button>
+        <button class="card" type="button" aria-pressed="false"><span class="front">عنادك</span><span class="back">بحبه كمان، بس لا تزيديه.</span></button>
+      </div>
+    </section>
+
+    <section class="ask">
+      <h2>بتضلي معي؟</h2>
+      <p id="hint" aria-live="polite"></p>
+      <div id="arena">
+        <div class="row">
+          <button class="btn" id="yes" type="button">إي</button>
+          <span class="slot"><button id="no" type="button">لا</button></span>
+        </div>
+      </div>
+      <div id="answer" hidden>
+        <p>كنت متأكد. وأنا هيك بحبك أكتر يا نورا.</p>
+        <button class="btn ghost" id="again" type="button">كمان مرة</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>made by your love ahmad</footer>
+</main>
+
+<canvas id="hearts" hidden></canvas>
+
+<script>
+(function () {
+  // Edit these two things: the day the story began and the letter itself.
+  var START = new Date(2026, 5, 15, 0, 0, 0);
+  var LETTER =
+    "بحبك فوق ما بتتخيليه\n" +
+    "يريت وبتمنالك الخير متل ما بتمنى لحالي\n" +
+    "وبحب قلبك وعيونك وروحك\n" +
+    "يريت لو فيني قضي حياتي لآخر لحظة معك";
+
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* day counter */
+  function tick() {
+    var s = Math.max(0, Math.floor((Date.now() - START.getTime()) / 1000));
+    $("d").textContent = Math.floor(s / 86400);
+    $("h").textContent = Math.floor((s % 86400) / 3600);
+    $("m").textContent = Math.floor((s % 3600) / 60);
+    $("s").textContent = s % 60;
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* letter, typed out once */
+  var typedOnce = false;
+  function typeLetter() {
+    if (typedOnce) return;
+    typedOnce = true;
+    var el = $("typed");
+    if (reduce) { el.textContent = LETTER; return; }
+    var i = 0;
+    el.classList.add("typing");
+    (function step() {
+      i += 1;
+      el.textContent = LETTER.slice(0, i);
+      if (i < LETTER.length) {
+        setTimeout(step, LETTER.charAt(i - 1) === "\n" ? 420 : 55);
+      } else {
+        el.classList.remove("typing");
+      }
+    })();
+  }
+
+  /* open the surprise */
+  $("open").addEventListener("click", function () {
+    $("story").hidden = false;
+    this.setAttribute("aria-expanded", "true");
+    this.hidden = true;
+    $("story").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    setTimeout(typeLetter, reduce ? 0 : 500);
+  });
+
+  /* flip cards */
+  Array.prototype.forEach.call(document.querySelectorAll(".card"), function (c) {
+    c.addEventListener("click", function () {
+      c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") === "true" ? "false" : "true");
+    });
+  });
+
+  /* hearts */
+  function heart(ctx, x, y, s) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + s * 0.3);
+    ctx.bezierCurveTo(x, y, x - s * 0.5, y, x - s * 0.5, y + s * 0.3);
+    ctx.bezierCurveTo(x - s * 0.5, y + s * 0.6, x, y + s * 0.8, x, y + s);
+    ctx.bezierCurveTo(x, y + s * 0.8, x + s * 0.5, y + s * 0.6, x + s * 0.5, y + s * 0.3);
+    ctx.bezierCurveTo(x + s * 0.5, y, x, y, x, y + s * 0.3);
+    ctx.fill();
+  }
+  function accent() {
+    var v = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    return v || "#c2315b";
+  }
+
+  /* quiet hearts rising behind the page */
+  (function ambient() {
+    if (reduce) return;
+    var c = $("ambient"), ctx = c.getContext("2d");
+    var w = 0, h = 0, hs = [], color = accent(), frames = 0;
+    function size() {
+      var dpr = window.devicePixelRatio || 1;
+      w = window.innerWidth; h = window.innerHeight;
+      c.width = w * dpr; c.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size();
+    window.addEventListener("resize", size);
+    for (var i = 0; i < 16; i++) {
+      hs.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vy: 0.25 + Math.random() * 0.45,
+        sway: Math.random() * 6.28,
+        size: 10 + Math.random() * 20,
+        a: 0.08 + Math.random() * 0.14
+      });
+    }
+    (function frame() {
+      frames += 1;
+      if (frames % 90 === 0) color = accent();
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = color;
+      hs.forEach(function (p) {
+        p.y -= p.vy;
+        p.sway += 0.012;
+        if (p.y < -40) { p.y = h + 30; p.x = Math.random() * w; }
+        ctx.globalAlpha = p.a;
+        heart(ctx, p.x + Math.sin(p.sway) * 14, p.y, p.size);
+      });
+      requestAnimationFrame(frame);
+    })();
+  })();
+
+  /* big burst when she says yes */
+  var colors = ["#ff7a9c", "#c2315b", "#f4a6b8", "#e8b04a", "#ffd0dc"];
+  var running = false;
+  function burst() {
+    if (reduce || running) return;
+    running = true;
+    var c = $("hearts");
+    c.hidden = false;
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    var ctx = c.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var ps = [];
+    for (var i = 0; i < 90; i++) {
+      ps.push({
+        x: Math.random() * w,
+        y: h + 30 + Math.random() * h * 0.9,
+        vy: 2 + Math.random() * 3.2,
+        sway: Math.random() * Math.PI * 2,
+        size: 14 + Math.random() * 26,
+        color: colors[i % colors.length]
+      });
+    }
+    (function frame() {
+      ctx.clearRect(0, 0, w, h);
+      var alive = 0;
+      ps.forEach(function (p) {
+        p.y -= p.vy;
+        p.sway += 0.04;
+        if (p.y > -50) alive += 1;
+        ctx.globalAlpha = Math.max(0, Math.min(1, p.y / (h * 0.3)));
+        ctx.fillStyle = p.color;
+        heart(ctx, p.x + Math.sin(p.sway) * 18, p.y, p.size);
+      });
+      if (alive) requestAnimationFrame(frame);
+      else { ctx.clearRect(0, 0, w, h); c.hidden = true; running = false; }
+    })();
+  }
+
+  /* the question: "no" runs away, "yes" stays put */
+  var no = $("no"), arena = $("arena"), yes = $("yes"), hint = $("hint");
+  var slot = no.parentNode;
+  var lines = ["لا؟ جد؟", "جربي مرة تانية.", "الزر عم يهرب منك.", "ما في غير إي.", "ليش عم تتعبي حالك؟", "ما رح تلحقيه."];
+  var n = 0;
+  function dodge() {
+    var ar = arena.getBoundingClientRect();
+    var sr = slot.getBoundingClientRect();
+    var yr = yes.getBoundingClientRect();
+    var bw = no.offsetWidth, bh = no.offsetHeight;
+    var x = 0, y = 0, ok = false, t = 0;
+    while (!ok && t < 30) {
+      t += 1;
+      x = Math.random() * (ar.width - bw);
+      y = Math.random() * (ar.height - bh);
+      var l = ar.left + x, tp = ar.top + y;
+      ok = l + bw < yr.left - 12 || l > yr.right + 12 || tp + bh < yr.top - 12 || tp > yr.bottom + 12;
+    }
+    no.style.transform = "translate(" + Math.round(ar.left + x - sr.left) + "px," + Math.round(ar.top + y - sr.top) + "px)";
+    hint.textContent = lines[n % lines.length];
+    n += 1;
+  }
+  no.addEventListener("pointerenter", dodge);
+  no.addEventListener("pointerdown", function (e) { e.preventDefault(); dodge(); });
+  no.addEventListener("click", dodge);
+
+  yes.addEventListener("click", function () {
+    arena.hidden = true;
+    hint.hidden = true;
+    $("answer").hidden = false;
+    burst();
+  });
+  $("again").addEventListener("click", burst);
+})();
+</script>
+
+</body></html>
